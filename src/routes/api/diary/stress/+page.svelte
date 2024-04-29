@@ -1,22 +1,22 @@
 <script>
 import {goto} from '$app/navigation';
     let dairy = [];
-    let content1 = ''; 
-    let content2 = ''; 
-    let content3 = ''; 
-    let content4 = ''; 
-    let content5 = ''; 
+    let content = [
+        "","","","",""
+    ]
+   
 
-    const saveDiary = async () => {
-        const combinedContent = `${content1}\n${content2}\n${content3}\n${content4}\n${content5}`; 
+    $: last5 = dairy.slice(-6,-1)
+
+    const saveDiary = async () => { 
         await fetch('/api/diary', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                content: combinedContent
-            })
+            body: JSON.stringify(
+                content
+            )
         });
         
     };
@@ -100,27 +100,13 @@ import {goto} from '$app/navigation';
     Hvad gør dig stresset?
 </h3>
 
-
+{#each content as c}
 <div>
-    <input bind:value={content1} type="text" placeholder="Skriv her" />
+    <input bind:value={c} type="text" placeholder="Skriv her"/>
 </div>
+{/each}
+{JSON.stringify(content)}
 
-<div>
-    <input bind:value={content2} type="text" placeholder="Skriv her" />
-</div>
-
-<div>
-    <input bind:value={content3} type="text" placeholder="Skriv her" />
-
-</div>
-
-<div>
-    <input bind:value={content4} type="text" placeholder="Skriv her" />
-</div>
-
-<div>
-    <input bind:value={content5} type="text" placeholder="Skriv her" />
-</div>
 
 <div>
         <button class="save-button" on:click={saveDiary}>Gem</button>
@@ -133,7 +119,7 @@ import {goto} from '$app/navigation';
 
 <div class="inputknap">
     <button on:click={inputknap}>Input fra tidligere</button>
-    {#each dairy as item}
+    {#each last5 as item}
     <div>
         <p>{item.content}</p>
     </div>
