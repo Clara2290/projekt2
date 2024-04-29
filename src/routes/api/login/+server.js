@@ -13,8 +13,9 @@ export async function POST({ request, cookies }) {
     if (match) {
         const token = jwt.sign({ id: user.id, email: user.email}, "s3cretStuff"); //Secret for signing - should not be in code.
         cookies.set('token', token, { httpOnly: true, path: '/' });
-        return new Response('OK', { status: 200 });
-    } else {
+        return new Response('Logged in',{status: 200});
+        } 
+        else {
         return new Response('Unauthorized', { status: 401 });
     }
 }

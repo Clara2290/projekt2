@@ -1,14 +1,27 @@
 <script>
     import {goto} from '$app/navigation';
     function navigationTostress() {
-        goto('/api/dairy/stress');
+        goto('/api/diary/stress');
     } 
     function navigationToenergi() {
-        goto('/api/dairy/energi');
+        goto('/api/diary/energi');
 
     } function navigationTougeplan() {
         goto('/home');
     } 
+
+    const logout = async () => {
+        const response = await fetch('/api/logud', {
+            method: 'GET'
+        });
+        if (response.status === 200) {
+            alert('Du er logget ud!');
+            window.location = '/'; 
+        } else {
+            alert('Der opstod en fejl under log ud-processen.');
+        }
+    };
+
 </script>
 <div class="image-container">
     <img src="/logo.png" alt="Logo">
@@ -20,24 +33,24 @@
 }
 
 .image-container {
-    display: flex; /* Anvender Flexbox */
-    justify-content: center; /* Centrerer børneelementer horisontalt */
-    align-items: center; /* Centrerer børneelementer vertikalt */
-    height: 30vh; /* Sætter containerens højde til hele viewport-højden */
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    height: 30vh; 
   }
 
 .button-container {
-        text-align: center; /* Centrer knapperne vandret */
-        margin-top: 20px; /* Tilføj margin øverst */
+        text-align: center; 
+        margin-top: 20px; 
 
 }
     button {
         background-color: #42a5f5;
-        color: white; /* Sæt tekstfarven til hvid for bedre kontrast */
-        border: none; /* Fjern kantlinjen */
-        padding: 20px 30px; /* Tilpas polstring efter behov */
-        margin: 5px; /* Tilføj margin omkring knapperne */
-        border-radius: 10px; /* Tilføj afrundede hjørner til knappen */
+        color: white; 
+        border: none; 
+        padding: 20px 30px; 
+        margin: 5px; 
+        border-radius: 10px; 
     }
 
 .logud{
@@ -56,5 +69,5 @@
 </div>
 
 <div class="logud">
-    <button>Log ud</button>
+    <button on:click={logout}>Log ud</button>    
 </div>

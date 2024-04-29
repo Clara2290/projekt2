@@ -1,9 +1,9 @@
 <script>
+    import {goto} from '$app/navigation';
     let ugedage = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
     let tider = ['Morgen', 'Formiddag', 'Eftermiddag', 'Aften'];
     let plan = {};
   
-    // Initialiser plan objektet med tomme strenge for hver tid på hver dag
     tider.forEach(tid => {
       ugedage.forEach(dag => {
         if (!plan[tid]) plan[tid] = {};
@@ -14,27 +14,50 @@
     function updatePlan(tid, dag, event) {
       plan[tid][dag] = event.target.value;
     }
+
+    function navigationTostart() {
+        goto('/api/start');}
+
+        const logout = async () => {
+        const response = await fetch('/api/logud', {
+            method: 'GET'
+        });
+        if (response.status === 200) {
+            alert('Du er logget ud!');
+            window.location = '/'; 
+        } else {
+            alert('Der opstod en fejl under log ud-processen.');
+        }
+    };
+
   </script>
   
   <style>
-    .container{
-      display: flex;
-      align-items: flex-start;
-    }
-  
-    .todo {
-      flex: 3;
-    }
-  
-    .logo {
-      flex: 1;
-    }
-  
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-  
+
+.container {
+  position: relative;
+}
+.todo {
+  flex: 3;
+  margin: 20px;
+  position: relative;
+  left: 10px; /* Flytter sektionen til venstre */
+}
+
+.logo {
+  flex: 1;
+  width: 20%;
+}
+
+table {
+  width: 80%;
+  margin: 5px;
+  border-collapse: collapse;
+  margin-left: 280px; /* Justerer til højre for to do-sektionen */
+  margin-top: -2px;
+}
+
+
     th, td {
       border: 1px solid black;
       padding: 10px;
@@ -77,6 +100,25 @@
     width: 50px; 
     height: 50px;
   }
+
+  button {
+        background-color: #42a5f5;
+        color: white; 
+        border: none; 
+        padding: 20px 30px; 
+        margin: 5px; 
+        border-radius: 10px; 
+  }
+
+  .logud{
+    float: right;
+    margin-top: -10px;
+    }
+
+    .tilbage{
+    float: left;
+    margin-top: -5px;
+    }
   
   </style>
   
@@ -125,5 +167,12 @@
       </table>
     </div>
   
-    <!-- Her kan du indsætte din yderligere todo list kode -->
-  </main>
+</main>
+
+<div class="tilbage">
+    <button on:click={navigationTostart}>Tilbage</button>
+</div>
+
+    <div class="logud">
+        <button on:click={logout}>Log ud</button>    
+    </div>

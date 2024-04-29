@@ -3,8 +3,6 @@
     let email = '';
     let Kodeord = '';
 
-
-
 const addUser = async () => {
         fetch('api/user', {
             method: 'POST',
@@ -20,7 +18,6 @@ const addUser = async () => {
     };
 
 </script>
-
 
 <h1>Administrator side!</h1>
 <div><input bind:value={Brugernavn} placeholder="Brugernavn" /></div>
