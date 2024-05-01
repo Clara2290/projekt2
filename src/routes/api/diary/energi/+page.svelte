@@ -1,26 +1,26 @@
 <script>
     import {goto} from '$app/navigation';
     let energi1 = [];
-    let content1 = ''; 
-    let content2 = ''; 
-    let content3 = ''; 
-    let content4 = ''; 
-    let content5 = ''; 
+    let content = [
+        "","","","",""
+ ];
 
-    const saveEnergi1 = async () => {
-        const combinedContent = `${content1}\n${content2}\n${content3}\n${content4}\n${content5}`; 
+    $: last5 = energi1.slice(-5)
+
+    const saveEnergi1 = async () => { 
         await fetch('/api/energi1', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                content: combinedContent
-            })
+            body: JSON.stringify(
+                content
+            )
         });
         
-    };
+    }; 
 
+    
     import { onMount } from 'svelte';
     onMount(async () => {
         const res = await fetch('/api/energi1/self');
@@ -29,6 +29,7 @@
         
     });
 
+    
     async function inputknap(){
     const res = await fetch('/api/energi1/self');
         energi1 = await res.json();
@@ -98,26 +99,11 @@
     Hvad giver dig energi?
 </h3>
 
+{#each content as c}
 <div>
-    <input bind:value={content1} type="text" placeholder="Skriv her" />
+    <input bind:value={c} type="text" placeholder="Skriv her"/>
 </div>
-
-<div>
-    <input bind:value={content2} type="text" placeholder="Skriv her" />
-</div>
-
-<div>
-    <input bind:value={content3} type="text" placeholder="Skriv her" />
-
-</div>
-
-<div>
-    <input bind:value={content4} type="text" placeholder="Skriv her" />
-</div>
-
-<div>
-    <input bind:value={content5} type="text" placeholder="Skriv her" />
-</div>
+{/each}
 
 <div>
 <button class="save-button" on:click={saveEnergi1}>Gem</button>
@@ -129,11 +115,11 @@
     <button on:click={logout}>Log ud</button>    
 </div>
 
-    <div class="inputknap">
-        <button on:click={inputknap}>Input fra tidligere</button>
-        {#each energi1 as item}
-        <div>
-            <p>{item.content}</p>
-        </div>
-    {/each}
+<div class="inputknap">
+    <button on:click={inputknap}>Input fra tidligere</button>
+    {#each last5 as item}
+    <div>
+        <p>{item.content}</p>
     </div>
+{/each}
+</div>

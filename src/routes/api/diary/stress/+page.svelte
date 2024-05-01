@@ -1,12 +1,11 @@
 <script>
-import {goto} from '$app/navigation';
-    let dairy = [];
+    import {goto} from '$app/navigation';
+    let diary = [];
     let content = [
         "","","","",""
-    ]
-   
+ ];
 
-    $: last5 = dairy.slice(-6,-1)
+    $: last5 = diary.slice(-5)
 
     const saveDiary = async () => { 
         await fetch('/api/diary', {
@@ -19,23 +18,25 @@ import {goto} from '$app/navigation';
             )
         });
         
-    };
+    }; 
 
+    
     import { onMount } from 'svelte';
     onMount(async () => {
         const res = await fetch('/api/diary/self');
         const previousEntries = await res.json();
-        dairy = await res.json();
+        diary = await res.json();
         
     });
 
+    
     async function inputknap(){
     const res = await fetch('/api/diary/self');
-        dairy = await res.json();
+    diary = await res.json();
         if (previousEntries.length > 5) {
-        dairy = previousEntries.slice(-5);
+            diary = previousEntries.slice(-5);
     } else {
-        dairy = previousEntries;
+        diary = previousEntries;
     }
         
     }
@@ -43,8 +44,7 @@ import {goto} from '$app/navigation';
     function navigationTostart() {
         goto('/api/start');}
     
-    
-    const logout = async () => {
+        const logout = async () => {
         const response = await fetch('/api/logud', {
             method: 'GET'
         });
@@ -55,7 +55,6 @@ import {goto} from '$app/navigation';
             alert('Der opstod en fejl under log ud-processen.');
         }
     };
-    
 </script>
 
 <img src="/logo.png" alt="Logo">
@@ -63,13 +62,13 @@ import {goto} from '$app/navigation';
     width: 30%;
 }
 
-
     input[type="text"] {
         width: 500px; 
         height: 40px; 
         font-size: 16px; 
-        margin-bottom: 20px; 
+        margin-bottom: 20px;
     }
+
 
     button {
         background-color: #42a5f5;
@@ -79,20 +78,20 @@ import {goto} from '$app/navigation';
         margin: 5px; 
         border-radius: 10px; 
     }
-    
+
+    .inputknap {
+    position: absolute; 
+      top: 220px;
+      right: 350px;
+    }
     .logud{
     float: right;
     margin-top: 80px;
     }
 
-.save-button {
-  margin-right: 300px;
+    .save-button {
+  margin-right: 300px; 
 }
-.inputknap {
-    position: absolute; 
-      top: 220px;
-      right: 350px;
-    }
 
 </style>
 
@@ -105,16 +104,15 @@ import {goto} from '$app/navigation';
     <input bind:value={c} type="text" placeholder="Skriv her"/>
 </div>
 {/each}
-{JSON.stringify(content)}
-
 
 <div>
-        <button class="save-button" on:click={saveDiary}>Gem</button>
-    <button on:click={navigationTostart}>Tilbage</button>
-  </div>
+<button class="save-button" on:click={saveDiary}>Gem</button>
+<button on:click={navigationTostart}>Tilbage</button>
+</div>
+
 
 <div class="logud">
-<button on:click={logout}>Log ud</button>    
+    <button on:click={logout}>Log ud</button>    
 </div>
 
 <div class="inputknap">
@@ -125,5 +123,3 @@ import {goto} from '$app/navigation';
     </div>
 {/each}
 </div>
-
-
